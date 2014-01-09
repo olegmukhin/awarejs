@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Block Prototype</title>
+</head>
+
+<body>
+	<script>
+	alert(performance.now());
+	
+	var tree = {
+		'html' : [0,'p',['This is some text before a tag ', [1,'span',[' and in a tag ']], ' and more text.', [2,'ul',[[3,'li',['test 1']],[4,'li',['test 2']],[5,'li',['test 3']]]]]],
+		'css' : [[[1],'font-weight: bold','font-face: Helvetica']],
+		'states' : []
+	};
+	
+	function Block(tree) {
+		var pub = {}, tree = tree || [], elems = [], style = document.head.appendChild(document.createElement('style')), states = {};
+		style.appendChild(document.createTextNode(''));
+		var decode = function(array, parent) {
+			var l = array.length, parent = parent || document.createElement('div');
+			for(var i = 0; i < l; i++) {
+				if(typeof array[i] === 'number') {
+					var elem = parent.appendChild(document.createElement(array[i+1]));
+					decode(array[i+2], elem);
+					elems[array[i]] = elem;
+					i += 3;
+				} else if(typeof array[i] === 'object') {
+					decode(array[i], parent);
+				} else if(typeof array[i] === 'string') {
+					parent.appendChild(document.createTextNode(array[i]));
+				}
+			}
+			return parent;
+		}
+		var css = function(array) {
+			alert(array);
+			var l = array.length;
+			for(var i = 0; i < l; i++) {// can change order to make more efficient
+				if(array[i][0].length <= 0) {
+					
+				} else {
+					for(var i=0;i<array[i][0].length;i++) {
+						
+					}
+				}
+			}
+		}
+		
+		pub.process = function(tree) {
+			document.body.appendChild(decode(tree.html));
+			document.write(elems);
+		}
+		pub.css = function(tree) {
+			css(tree.css);
+		}
+		pub.trigerState = function(state) {}
+		return pub;
+	}
+	
+	var b = new Block();
+	b.process(tree);
+	b.css(tree);
+	
+	
+	function State() {
+		//var pub = {} ;
+		//pub.
+		return pub;
+	}
+	
+	window.$ = (function(w, d){
+		var c = function(e){return d.createElement(e);}, g = function(i){return d.getElementById(i);}, blocks = {}, state = {}, s = 's';
+		
+	})(window, document, undefined);
+	</script>
+</body>
+</html>
